@@ -49,7 +49,10 @@ const play = async (guild, url) => {
   const connection = voice.getVoiceConnection(guild);
 
   if (connection) {
+    console.log(queue);
     if (queue.length > 0) queue.shift();
+
+    console.log(queue);
 
     let stream = (await (await fetch(url)).blob()).stream();
     const resource = voice.createAudioResource(stream);

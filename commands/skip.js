@@ -13,7 +13,7 @@ module.exports = {
       // Initial response deferred for later
       await interaction.deferReply();
 
-      if (queue.length === 0) {
+      if (queue.length === 0 && player.state.status === "idle") {
         throw {
           name: "No TTS in Queue",
           message: "There is no TTS in queue, type in the text channel set to send Text to Speech.",
@@ -21,6 +21,17 @@ module.exports = {
       }
 
       player.stop();
+
+      const skippedVoice = new EmbedBuilder()
+        .setTitle(`TTS Skipped`)
+        .setDescription("TTS Message was skipped!")
+        .setColor(0x0de11b)
+        .setFooter({ text: "Made by Dark", iconURL: "https://i.imgur.com/pHxhkDb.png" })
+        .setTimestamp();
+
+      await interaction.editReply({
+        embeds: [skippedVoice],
+      });
     } catch (error) {
       console.log({ Guild_ID: interaction.guild.id, Set_Error: error });
 
@@ -31,7 +42,7 @@ module.exports = {
         .setFooter({ text: "Made by Dark", iconURL: "https://i.imgur.com/pHxhkDb.png" })
         .setTimestamp();
 
-      await interaction.followUp({
+      await interaction.reply({
         embeds: [errorHandlerEmbed],
       });
     }

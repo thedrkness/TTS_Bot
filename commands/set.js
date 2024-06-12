@@ -229,7 +229,7 @@ module.exports = {
         .setFooter({ text: "Made by Dark", iconURL: "https://i.imgur.com/pHxhkDb.png" })
         .setTimestamp();
 
-      await interaction.followUp({
+      await interaction.reply({
         embeds: [errorHandlerEmbed],
       });
     }
