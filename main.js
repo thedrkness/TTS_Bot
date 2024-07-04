@@ -79,18 +79,20 @@ client.on("voiceStateUpdate", (oldState, newState) => {
 // New Message for Text to Speech
 client.on("messageCreate", async (message) => {
   const connection = voice.getVoiceConnection(message.guildId);
+
+  console.log(connection, message.author.bot);
   if (!connection || message.author.bot) return;
 
   const { data, error } = await supabase.from("discords").select().eq("guild_id", message.guildId);
   if (error) throw new Error("Error fetching guild data");
 
+  console.log(data);
+  console.log(message.channelId, message.guild.id, data[0].textchannel_id);
   if (message.channelId !== data[0].textchannel_id) return;
 
   const urlMessage = `https://api.streamelements.com/kappa/v2/speech?voice=${data[0].voice}&text=${encodeURIComponent(message)}`;
 
   console.log(urlMessage);
-
-  console.log(message.channelId, message.guild.id)
 
   queue.push({
     guild: message.guildId,
