@@ -87,6 +87,11 @@ client.on("messageCreate", async (message) => {
   if (message.channelId !== data[0].textchannel_id) return;
 
   const urlMessage = `https://api.streamelements.com/kappa/v2/speech?voice=${data[0].voice}&text=${encodeURIComponent(message)}`;
+
+  console.log(urlMessage);
+
+  console.log(message.channelId, message.guild.id)
+
   queue.push({
     guild: message.guildId,
     url: urlMessage,
